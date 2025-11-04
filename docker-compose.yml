@@ -1,43 +1,15 @@
-version: "3.9"
-
 services:
-  api:
+  backend:
     build: .
-    container_name: locations_api
+    container_name: location_api
+    ports:
+      - "8003:8000"
     env_file:
       - .env
-    environment:
-      API_MAPBOX_DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/locations
-      API_MAPBOX_APP_NAME: locations-service
-      API_MAPBOX_DEBUG: "true"
-    depends_on:
-      - db
-    ports:
-      - "8000:8000"
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-    volumes:
-      - ./:/app
+    restart: unless-stopped
+    networks:
+      - pg-docker_default
 
-  db:
-    image: postgres:15-alpine
-    container_name: locations_db
-    environment:
-      POSTGRES_DB: locations
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - pg_data:/var/lib/postgresql/data
-
-  adminer:
-    image: adminer:4
-    container_name: locations_adminer
-    restart: always
-    depends_on:
-      - db
-    ports:
-      - "8080:8080"
-
-volumes:
-  pg_data:
+networks:
+  pg-docker_default:
+    external: true

@@ -1,9 +1,9 @@
 services:
-  backend:
+  location_api:
     build: .
     container_name: location_api
-    ports:
-      - "8003:8000"
+    expose:
+      - "8000"
     env_file:
       - .env
     restart: unless-stopped

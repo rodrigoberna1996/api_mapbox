@@ -89,3 +89,7 @@ class LocationRepository(ABC):
         rol: str,
     ) -> None:
         """Detach a client reference from the location."""
+
+    @abstractmethod
+    async def delete_location(self, location_id: int) -> bool:
+        """Remove the location aggregate. Returns True if a row was deleted."""

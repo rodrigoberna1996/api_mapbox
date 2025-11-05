@@ -209,13 +209,29 @@ class SQLAlchemyLocationRepository(LocationRepository):
         await self._session.delete(client)
         await self._session.commit()
 
+    async def delete_location(self, location_id: int) -> bool:
+        model = await self._get_model(location_id)
+        if model is None:
+            return False
+        await self._session.delete(model)
+        await self._session.commit()
+        return True
+
     async def _get_model_by_codigo(self, codigo: str) -> LocationModel | None:
-        stmt = self._base_query().where(LocationModel.codigo == codigo)
+        stmt = (
+            self._base_query()
+            .execution_options(populate_existing=True)
+            .where(LocationModel.codigo == codigo)
+        )
         result = await self._session.execute(stmt)
         return result.scalar_one_or_none()
 
     async def _get_model(self, location_id: int) -> LocationModel | None:
-        stmt = self._base_query().where(LocationModel.id == location_id)
+        stmt = (
+            self._base_query()
+            .execution_options(populate_existing=True)
+            .where(LocationModel.id == location_id)
+        )
         result = await self._session.execute(stmt)
         return result.scalar_one_or_none()
 

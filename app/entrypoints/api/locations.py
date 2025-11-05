@@ -23,6 +23,7 @@ from app.application.use_cases.get_location import GetLocation
 from app.application.use_cases.list_locations import ListLocations
 from app.application.use_cases.manage_aliases import AddLocationAlias, RemoveLocationAlias
 from app.application.use_cases.manage_clients import AddClientLink, RemoveClientLink
+from app.application.use_cases.delete_location import DeleteLocation
 from app.application.use_cases.update_address import UpdateLocationAddress
 from app.application.use_cases.update_location import UpdateLocation
 from app.domain.models.location import LocationType
@@ -136,6 +137,21 @@ async def delete_alias(
     repository = _get_repository(session)
     use_case = RemoveLocationAlias(repository)
     await use_case.execute(location_id, alias_id)
+
+
+@router.delete(
+    "/{location_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    response_class=Response,
+    response_model=None,
+)
+async def delete_location(
+    location_id: int,
+    session: AsyncSession = Depends(get_session),
+) -> None:
+    repository = _get_repository(session)
+    use_case = DeleteLocation(repository)
+    await use_case.execute(location_id)
 
 
 @router.post(

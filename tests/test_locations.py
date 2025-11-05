@@ -191,3 +191,26 @@ async def test_list_locations_by_client_endpoint(client):
     assert loc_all["es_global"] is True
     loc_401 = next(item for item in data["items"] if item["codigo"] == "LOC-401")
     assert loc_401["es_global"] is False
+
+
+@pytest.mark.asyncio
+async def test_delete_location(client):
+    response = await client.post(
+        "/locations",
+        json={
+            "nombre_oficial": "Central Borrar",
+            "codigo": "LOC-DELETE",
+            "es_global": False,
+        },
+    )
+    assert response.status_code == 201
+    location_id = response.json()["id"]
+
+    delete_response = await client.delete(f"/locations/{location_id}")
+    assert delete_response.status_code == 204
+
+    detail_after_delete = await client.get(f"/locations/{location_id}")
+    assert detail_after_delete.status_code == 404
+
+    second_delete = await client.delete(f"/locations/{location_id}")
+    assert second_delete.status_code == 404

@@ -1,0 +1,48 @@
+# Ignore control de versiones y metadatos
+.git
+.gitignore
+
+# Archivos de entorno / secretos
+.env
+.env.*       # si usas variantes como .env.production, .env.local
+*.env
+
+# Archivos de sistema / editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Dependencias locales (serán instaladas en el contenedor)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.swp
+
+# Logs, pruebas, cobertura
+*.log
+*.log.*
+/tests/
+/coverage/
+/htmlcov/
+*.pytest_cache
+*.tox/
+
+# Archivos de compilación, artefactos, dependencias generadas
+/dist/
+/build/
+/tmp/
+/temp/
+/node_modules/      # Si en algún servicio frontend tienes node_modules
+
+# Docker- y CI/CD relacionados
+docker-compose*.yml
+Dockerfile*
+.dockerignore
+
+# Otros archivos de proyecto que no se requieren en producción
+*.md
+*.txt
+README*
+LICENSE

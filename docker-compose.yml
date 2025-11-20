@@ -1,6 +1,8 @@
 services:
   location_api:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: location_api
     expose:
       - "8000"
@@ -8,8 +10,8 @@ services:
       - .env
     restart: unless-stopped
     networks:
-      - pg-docker_default
+      - docker_default
 
 networks:
-  pg-docker_default:
+  docker_default:
     external: true

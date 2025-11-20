@@ -43,6 +43,9 @@ Dockerfile*
 
 # Otros archivos de proyecto que no se requieren en producción
 *.md
-*.txt
+# *.txt  # Comentado para permitir requirements.txt
 README*
 LICENSE
+
+# Excepción: permitir requirements.txt
+!requirements.txt

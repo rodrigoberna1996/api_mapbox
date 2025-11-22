@@ -180,7 +180,7 @@ async def test_list_locations_by_client_endpoint(client):
         },
     )
 
-    response = await client.get("/clients/crm/99/locations")
+    response = await client.get("/locations/by-client/crm/99")
     assert response.status_code == 200
     data = response.json()
     assert data["total"] >= 1

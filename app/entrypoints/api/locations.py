@@ -32,7 +32,6 @@ from app.infrastructure.db.session import get_session
 from app.infrastructure.repositories.location import SQLAlchemyLocationRepository
 
 router = APIRouter(prefix="/locations", tags=["localidades"])
-clients_router = APIRouter(prefix="/clients", tags=["clientes"])
 
 
 def _get_repository(session: AsyncSession) -> SQLAlchemyLocationRepository:
@@ -185,8 +184,8 @@ async def delete_client(
     await use_case.execute(location_id, payload)
 
 
-@clients_router.get(
-    "/{cliente_source}/{cliente_external_id}/locations",
+@router.get(
+    "/by-client/{cliente_source}/{cliente_external_id}",
     response_model=LocationListResponse,
 )
 async def list_locations_by_client(

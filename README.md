@@ -69,7 +69,7 @@ La API expone:
 - `DELETE /locations/{id}/aliases/{aliasId}`
 - `POST /locations/{id}/clients`
 - `DELETE /locations/{id}/clients`
-- `GET /clients/{clienteSource}/{clienteExternalId}/locations`
+- `GET /locations/by-client/{clienteSource}/{clienteExternalId}`
 - `GET /health`
 
 ## Uso con Docker

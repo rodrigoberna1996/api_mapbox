@@ -22,9 +22,4 @@ USER appuser
 
 EXPOSE 8000
 
-CMD ["gunicorn", "app.main:app",
-     "-k", "uvicorn.workers.UvicornWorker",
-     "-w", "2",
-     "--timeout", "120",
-     "--keep-alive", "5",
-     "-b", "0.0.0.0:8000"]
+CMD ["gunicorn","app.main:app","-k","uvicorn.workers.UvicornWorker","-w","2","--timeout","120","--keep-alive","5","-b","0.0.0.0:8000"]

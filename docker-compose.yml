@@ -3,7 +3,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: location_api
     expose:
       - "8000"
     env_file:
@@ -11,6 +10,14 @@ services:
     restart: unless-stopped
     networks:
       - docker_default
+
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp
 
 networks:
   docker_default:

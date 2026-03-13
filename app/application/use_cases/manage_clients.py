@@ -1,7 +1,7 @@
 """Use cases for managing external client links."""
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 from fastapi import HTTPException, status
 
 from app.application.dto.location import ClientDeleteRequest, ClientRead, ClientRef
@@ -19,7 +19,7 @@ class AddClientLink:
             cliente_source=payload.cliente_source,
             cliente_external_id=payload.cliente_external_id,
             rol=payload.rol,
-            created_at=datetime.utcnow(),
+            created_at=datetime.now(timezone.utc),
         )
         result = await self._repository.add_client(location_id, client)
         return ClientRead.model_validate(

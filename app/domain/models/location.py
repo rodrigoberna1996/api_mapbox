@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import StrEnum
 class LocationType(StrEnum):
     ORIGEN = "Origen"
@@ -50,8 +50,8 @@ class Location:
     tipo: LocationType = LocationType.AMBOS
     activo: bool = True
     es_global: bool = False
-    created_at: datetime = field(default_factory=datetime.utcnow)
-    updated_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     address: Address | None = None
     aliases: list[Alias] = field(default_factory=list)
     clients: list[ClientLink] = field(default_factory=list)
@@ -69,7 +69,7 @@ class Location:
         created_at: datetime | None = None,
         updated_at: datetime | None = None,
     ) -> "Location":
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         return cls(
             id=location_id,
             nombre_oficial=nombre_oficial,

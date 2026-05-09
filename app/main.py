@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from logging.config import dictConfig
 
 from fastapi import Depends, FastAPI, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
@@ -50,6 +51,22 @@ async def lifespan(_: FastAPI):
 app = FastAPI(title=settings.app_name, debug=False, lifespan=lifespan)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(
+    _request: Request, exc: RequestValidationError
+) -> JSONResponse:
+    """Log validation errors to help debug 422 responses."""
+    logging.getLogger(__name__).warning(
+        "Validation error 422: %s", exc.errors()
+    )
+    return JSONResponse(
+        status_code=422,
+        content={"detail": exc.errors()},
+    )
+
+
 app.add_middleware(SlowAPIASGIMiddleware)
 app.include_router(locations_router, dependencies=[Depends(require_internal_key)])
 

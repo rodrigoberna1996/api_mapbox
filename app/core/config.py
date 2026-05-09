@@ -1,5 +1,7 @@
 """Application configuration via environment variables."""
 from functools import lru_cache
+
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy.engine import make_url
 
@@ -9,11 +11,16 @@ class Settings(BaseSettings):
 
     app_name: str = "api-mapbox"
     debug: bool = False
+    internal_api_key: str | None = Field(default=None, validation_alias="INTERNAL_API_KEY")
     database_url: str = (
         "postgresql+asyncpg://postgres:postgres@localhost:5432/api_mapbox"
     )
 
-    model_config = SettingsConfigDict(env_file=('.env',), env_prefix='API_MAPBOX_')
+    model_config = SettingsConfigDict(
+        env_file=('.env',),
+        env_prefix='API_MAPBOX_',
+        extra='ignore',
+    )
 
     @property
     def async_database_url(self) -> str:
